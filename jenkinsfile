@@ -1,0 +1,32 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Checkout your source code from version control (e.g., git)
+                // E.g., git checkout or svn checkout
+            }
+        }
+        stage('Build with Maven') {
+            steps {
+                // Set up JDK, Maven, and any other required environment configurations
+                // E.g., using Maven tool installation in Jenkins
+                // E.g., tool 'Maven'
+                sh 'mvn clean test'
+            }
+        }
+        stage('Publish Cucumber Reports') {
+            steps {
+                // Publish Cucumber reports to Jenkins
+                cucumber buildStatus: 'UNSTABLE', jsonReportDirectory: 'target/cucumber-json', fileIncludePattern: '**/*.json'
+            }
+        }
+    }
+
+    post {
+        always {
+            // Optionally, perform cleanup or notifications
+        }
+    }
+}
